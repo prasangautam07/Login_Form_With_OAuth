@@ -6,7 +6,7 @@ import cookieParser from 'cookie-parser';
 export const app = express();
 
 app.use(cors({
-    origin: 'http://localhost:5173',
+    origin: '*',
     credentials: true,
 }));
 app.use(express.json());
@@ -18,3 +18,6 @@ app.use(cookieParser());
 app.get('/', (req, res)=>{
     res.send("Server is running!");
 });
+
+import userRoutes from './routes/user.routes.js';
+app.use('/api/users', userRoutes);
