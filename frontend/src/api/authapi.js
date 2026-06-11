@@ -1,6 +1,4 @@
 import axios from "axios";
-import toast from "react-hot-toast";
-
 const API_URL = "http://localhost:8000/api/users";
 
 export const Login = async (username, password) => {
@@ -8,7 +6,9 @@ export const Login = async (username, password) => {
     const response = await axios.post(`${API_URL}/login`, {
       username,
       password,
-    });
+    },{
+        withCredentials:true
+    },);
     return response;
   } catch (error) {
     throw error;
@@ -41,3 +41,12 @@ export const Logout = async () => {
     throw error;
   }
 };
+
+export const getSession= async ()=>{
+    try{
+        const response = await axios.get(`${API_URL}/session`,{withCredentials:true});
+        return response;
+    }catch(err){
+        throw err;
+    }
+}

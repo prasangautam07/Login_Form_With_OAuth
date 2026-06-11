@@ -1,4 +1,4 @@
-import {User} from '../models/user.model.js';
+import { User } from '../models/user.model.js';
 
 export const registerUser = async (req, res)=>{
     try{
@@ -53,10 +53,9 @@ export const loginUser = async (req, res)=>{
             secure: true,
         };
         res
-            .status(200)
-            .cookie('refreshToken', refreshToken, options)
-            .cookie('accessToken', accessToken, options)
-            .json({success:true, message:"User logged in successfully", user: loggedInUser});
+          .cookie("accessToken", accessToken, options)
+          .cookie("refreshToken", refreshToken, options)
+          .json({success:true, message:"User logged in successfully", user: loggedInUser});
     }catch(err){
         console.log("Error logging in user:", err);
         res.status(500).json({message:"Internal server error"});
@@ -89,5 +88,21 @@ export const logoutUser = async (req, res)=>{
     }catch(err){
         console.log("Error logging out user:", err);
         res.status(500).json({message:"Internal server error"});
+    }
+}
+
+export const getSession = async(req, res)=>{
+    try{
+        if(!req.user){
+            return res.status(401).json({message:"Unauthorized"});
+        }
+        const user = await User.findById(req.user._id).select("-password -refreshToken");
+        if(!user){
+            return res.status(404).json({message:"User not found."})
+        }
+        res.status(200).json({user,loggedIn:true});
+    }catch(err){
+        console.log("Error while getting Session:",err);
+        res.status(500).json({message:"Internal server Error."});
     }
 }

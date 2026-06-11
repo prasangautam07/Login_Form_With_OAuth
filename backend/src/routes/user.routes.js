@@ -1,4 +1,4 @@
-import { registerUser, loginUser,logoutUser } from "../controllers/user.controller.js";
+import { registerUser, loginUser,logoutUser, getSession } from "../controllers/user.controller.js";
 import { verifyUser } from "../middlewares/auth.middleware.js";
 import { googleOAuth , githubOAuth} from "../controllers/oauth.controller.js";
 import {Router} from "express";
@@ -8,6 +8,7 @@ const router = Router();
 router.post('/register', registerUser);
 router.post('/login', loginUser);
 router.post('/logout', verifyUser, logoutUser);
+router.get('/session',verifyUser,getSession);
 
 router.get('/google/callback', googleOAuth);
 router.get('/google/login',(req, res)=>{
