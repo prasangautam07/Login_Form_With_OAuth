@@ -5,7 +5,6 @@ import {User} from '../models/user.model.js';
 export const googleOAuth = async (req, res)=>{
     try{
         const code = req.query.code;
-        console.log("Authorization code received:", code);
         if(!code){
             return res.status(400).json({message:"Authorization code is missing"});
         }
@@ -30,7 +29,6 @@ export const googleOAuth = async (req, res)=>{
             },
         });
         const {email, name,picture} = userInfoResponse.data;
-        console.log("Google user info:", userInfoResponse.data);
         let user = await User.findOne({email});
         if(!user){
             user = await User.create({
@@ -41,12 +39,10 @@ export const googleOAuth = async (req, res)=>{
                 avatar: picture || undefined,
             });
         }
-        console.log("User found/created in database:", user);
         const accessToken = user.generateAccessToken();
         const refreshToken = user.generateRefreshToken();
         user.refreshToken = refreshToken;
         await user.save();
-        console.log("User logged in with Google:", user);
         const options = {
             httpOnly: true,
             secure: true,
