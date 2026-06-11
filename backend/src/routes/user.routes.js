@@ -22,12 +22,8 @@ router.get('/github/callback', githubOAuth);
 router.get('/github/login',(req, res)=>{
     const clientId = process.env.GITHUB_CLIENT_ID;
     const redirectUri = process.env.GITHUB_OAUTH_REDIRECT_URI;
-    //const authUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=openid%20email%20profile&access_type=offline&prompt=consent`;
-    const authUrl =
-  `https://github.com/login/oauth/authorize` +
-  `?client_id=${clientId}` +
-  `&redirect_uri=${redirectUri}` +
-  `&scope=user:email`;
+    const authUrl = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${redirectUri}&response_type=code&scope=user:email&prompt=consent`;
+    //const authUrl =`https://github.com/login/oauth/authorize` +`?client_id=${clientId}`+`&redirect_uri=${redirectUri}`+`&scope=user:email`;
     res.redirect(authUrl);
 });
 export default router;

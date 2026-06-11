@@ -3,12 +3,14 @@ import { Link, useNavigate } from "react-router-dom";
 import { GitHubLight, Google } from "@ridemountainpig/svgl-react";
 import { Login } from "../api/authapi";
 import toast from "react-hot-toast";
+import { useUser } from "../UserContext";
 
 export const LoginForm = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const { setUser } = useUser();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -27,8 +29,9 @@ export const LoginForm = () => {
     try{
         const response = await loginPromise;
         if (response.status === 200) {
+            setUser(response.data.user);
             setError("");
-            navigate("/");
+            navigate("/", { replace: true });
         }else{
             setError(response?.data?.message || "Login failed. Please try again.");
         }
@@ -94,18 +97,26 @@ export const LoginForm = () => {
           >
             Login
           </button>
-          <button className="w-full font-semibold text-sm py-2 hover:bg-gray-100 border border-gray-300 rounded-lg transition-colors">
+          <div className="w-full font-semibold text-sm py-2 hover:bg-gray-100 border border-gray-300 rounded-lg transition-colors flex items-center justify-center cursor-pointer"
+              onClick={()=>{
+                window.location.href = "http://localhost:8000/api/users/google/login";
+              }}
+           >
             <Google width={20} height={20} className="inline-block mr-2" />
-            <a href="http://localhost:8000/api/users/google/login">
+            <p>
               Login with Google
-            </a>
-          </button>
-          <button className="w-full font-semibold text-sm py-2 hover:bg-gray-100 border border-gray-300 rounded-lg transition-colors">
+            </p>
+          </div>
+          <div className="w-full font-semibold text-sm py-2 hover:bg-gray-100 border border-gray-300 rounded-lg transition-colors flex items-center justify-center cursor-pointer"
+              onClick={()=>{
+                window.location.href = "http://localhost:8000/api/users/github/login";
+              }}
+          >
             <GitHubLight width={20} height={20} className="inline-block mr-2" />
-            <a href="http://localhost:8000/api/users/github/login">
+            <p>
               Login with GitHub
-            </a>
-          </button>
+            </p>
+          </div>
         </div>
       </form>
     </div>

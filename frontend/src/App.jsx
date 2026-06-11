@@ -4,6 +4,7 @@ import { SignupPage } from './pages/SignupPage'
 import HomePage from './pages/HomePage'
 import { Route, Routes } from 'react-router-dom'
 import { ProtectedRoutes } from './ProtectedRoutes'
+import { PublicRoutes } from './PublicRoutes'
 function App() {
 
   return (
@@ -12,8 +13,10 @@ function App() {
       <Route element={<ProtectedRoutes/>}>
         <Route path='/' element={<HomePage/>}/>
       </Route>
-      <Route path='/login' element={<LoginPage/>}/>
-      <Route path='/signup' element={<SignupPage/>}/>
+      <Route element={<PublicRoutes/>}>
+        <Route path='/login' element={<LoginPage/>}/>
+        <Route path='/signup' element={<SignupPage/>}/>
+      </Route>
     </Routes>
     </>
   )

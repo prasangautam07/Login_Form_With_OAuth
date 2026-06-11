@@ -6,7 +6,7 @@ import { useUser } from '../UserContext';
 
 const HomePage = () => {
   const navigate = useNavigate();
-  const{user}=useUser();
+  const{user,setUser}=useUser();
   const handleLogout = async (e)=>{
     e.preventDefault();
 
@@ -21,7 +21,8 @@ const HomePage = () => {
     try{
         const response= await logoutPromise;
         if (response.status === 200) {
-            navigate("/login");
+            setUser(null);
+            navigate("/login", { replace: true });
         }
     }catch(err){
       console.log(err);
